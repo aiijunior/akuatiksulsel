@@ -1,0 +1,5 @@
+{
+  "name": "Wasit Akuatik Sulsel",
+  "description": "Aplikasi web untuk mengelola dan menampilkan data wasit akuatik di provinsi Sulawesi Selatan. Termasuk fitur untuk menambah, mengubah, menghapus, dan mencetak data wasit.",
+  "requestFramePermissions": []
+}

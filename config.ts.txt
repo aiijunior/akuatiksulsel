@@ -1,0 +1,56 @@
+/**
+ * =================================================================
+ * TEMPLATE KONFIGURASI APLIKASI
+ * =================================================================
+ * **PETUNJUK:** Ganti nama file ini dari `config.ts.txt` menjadi `config.ts`.
+ * Setelah itu, isi semua nilai placeholder di bawah ini.
+ *
+ * File ini berisi semua pengaturan dan variabel yang dapat disesuaikan
+ * untuk aplikasi. Ubah nilai di sini untuk menyesuaikan aplikasi
+ * dengan kebutuhan organisasi Anda.
+ */
+
+// --- KONFIGURASI SUPABASE (WAJIB DIISI) ---
+// Masukkan URL dan Kunci Publik (anon key) dari proyek Supabase Anda.
+// Anda bisa mendapatkan informasi ini dari Dasbor Proyek > Settings > API.
+export const SUPABASE_URL = ''; // CONTOH: 'https://xxxxxxxxxxxxxxxxxxxx.supabase.co'
+export const SUPABASE_ANON_KEY = ''; // CONTOH: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3Mi...'
+
+// --- INFORMASI ORGANISASI & BRANDING ---
+// Nama organisasi yang akan muncul di seluruh aplikasi.
+export const ORGANIZATION_NAME = "Nama Organisasi Anda";
+// Nama dasar aplikasi.
+export const APP_NAME = "Data Wasit";
+// Judul lengkap aplikasi, akan digabungkan dari APP_NAME dan ORGANIZATION_NAME.
+export const APP_TITLE = `${APP_NAME} ${ORGANIZATION_NAME}`;
+
+// --- KREDENSIAL LOGIN ADMIN (DEFAULT) ---
+// Kredensial ini digunakan untuk login awal. Sangat disarankan untuk
+// mengubah ini atau mengintegrasikan dengan sistem otentikasi yang lebih aman
+// seperti Supabase Auth di masa mendatang.
+export const DEFAULT_ADMIN_USERNAME = 'admin';
+export const DEFAULT_ADMIN_PASSWORD = 'admin123';
+
+
+// --- DATA MASTER APLIKASI ---
+// Sesuaikan daftar di bawah ini dengan kebutuhan organisasi Anda.
+// Data ini akan muncul di form input dan dropdown.
+
+// Daftar tingkat lisensi wasit yang tersedia.
+// Urutan penting: dari terendah ke tertinggi.
+export const LICENSE_LEVELS = [
+  "Lisensi D (Daerah/Lokal)",
+  "Lisensi C (Nasional)",
+  "Lisensi B (Nasional)",
+  "Lisensi A (Internasional)",
+];
+
+// Daftar cabang olahraga akuatik yang diakui.
+export const SPORT_BRANCHES = [
+    "Renang",
+    "Polo Air",
+    "Loncat Indah",
+    "Renang Indah",
+    "Renang Perairan Terbuka",
+    "Master"
+];
