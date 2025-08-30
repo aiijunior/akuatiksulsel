@@ -12,7 +12,7 @@ interface SummaryCardProps {
 }
 
 const SummaryCard: React.FC<SummaryCardProps> = ({ title, value, icon, color }) => (
-    <div className={`p-4 rounded-lg shadow-lg text-white ${color}`}>
+    <div className={`p-4 rounded-lg shadow-lg text-white ${color} h-full`}>
         <div className="flex items-center gap-4">
             {icon}
             <div>
@@ -106,6 +106,7 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ referees, logoUrl }) => {
     const [selectedReferee, setSelectedReferee] = useState<Referee | null>(null);
     const [selectedLicense, setSelectedLicense] = useState<string | null>(null);
+    const [selectedGender, setSelectedGender] = useState<'L' | 'P' | null>(null);
 
     const handleViewDetails = (referee: Referee) => {
         setSelectedReferee(referee);
@@ -117,6 +118,10 @@ const HomePage: React.FC<HomePageProps> = ({ referees, logoUrl }) => {
     
     const handleLicenseClick = (level: string) => {
         setSelectedLicense(prevLevel => (prevLevel === level ? null : level));
+    };
+
+    const handleGenderClick = (gender: 'L' | 'P') => {
+        setSelectedGender(prevGender => (prevGender === gender ? null : gender));
     };
 
     const summaryData = useMemo(() => {
@@ -135,9 +140,15 @@ const HomePage: React.FC<HomePageProps> = ({ referees, logoUrl }) => {
     }, [referees]);
 
     const filteredReferees = useMemo(() => {
-        if (!selectedLicense) return referees;
-        return referees.filter(r => r.highestLicense === selectedLicense);
-    }, [referees, selectedLicense]);
+        let filtered = referees;
+        if (selectedLicense) {
+            filtered = filtered.filter(r => r.highestLicense === selectedLicense);
+        }
+        if (selectedGender) {
+            filtered = filtered.filter(r => r.gender === selectedGender);
+        }
+        return filtered;
+    }, [referees, selectedLicense, selectedGender]);
     
     const getLicenseVisuals = (level: string): { Icon: React.FC<{ className?: string }>, color: string, letter: string } => {
         if (level.includes("Lisensi A")) {
@@ -167,8 +178,24 @@ const HomePage: React.FC<HomePageProps> = ({ referees, logoUrl }) => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 items-center">
                     <DonutChart male={summaryData.maleCount} female={summaryData.femaleCount} total={summaryData.total} />
                     <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                        <SummaryCard title="Wasit Pria" value={summaryData.maleCount} icon={<MaleIcon className="w-10 h-10 text-white/80"/>} color="bg-blue-600" />
-                        <SummaryCard title="Wasit Wanita" value={summaryData.femaleCount} icon={<FemaleIcon className="w-10 h-10 text-white/80"/>} color="bg-red-500" />
+                         <div
+                            onClick={() => handleGenderClick('L')}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={selectedGender === 'L'}
+                            className={`rounded-lg cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${selectedGender === 'L' ? 'ring-2 ring-blue-600 shadow-xl' : ''}`}
+                        >
+                            <SummaryCard title="Wasit Pria" value={summaryData.maleCount} icon={<MaleIcon className="w-10 h-10 text-white/80"/>} color="bg-blue-600" />
+                        </div>
+                        <div
+                            onClick={() => handleGenderClick('P')}
+                            role="button"
+                            tabIndex={0}
+                            aria-pressed={selectedGender === 'P'}
+                            className={`rounded-lg cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 ${selectedGender === 'P' ? 'ring-2 ring-red-600 shadow-xl' : ''}`}
+                        >
+                            <SummaryCard title="Wasit Wanita" value={summaryData.femaleCount} icon={<FemaleIcon className="w-10 h-10 text-white/80"/>} color="bg-red-500" />
+                        </div>
                     </div>
                 </div>
 
@@ -243,12 +270,25 @@ const HomePage: React.FC<HomePageProps> = ({ referees, logoUrl }) => {
                     <h2 className="text-3xl font-bold text-slate-800">Data Wasit</h2>
                     {selectedLicense && (
                         <div className="flex items-center gap-2 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">
-                            <span className="font-semibold">{selectedLicense}</span>
+                            <span className="font-semibold">{selectedLicense.match(/Lisensi \w/)}</span>
                             <button
                                 onClick={() => setSelectedLicense(null)}
                                 className="text-blue-600 hover:text-blue-800"
-                                aria-label="Hapus filter"
-                                title="Hapus filter"
+                                aria-label="Hapus filter lisensi"
+                                title="Hapus filter lisensi"
+                            >
+                                <XMarkIcon className="h-4 w-4" />
+                            </button>
+                        </div>
+                    )}
+                     {selectedGender && (
+                        <div className={`flex items-center gap-2 px-3 py-1 rounded-full text-sm ${selectedGender === 'L' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'}`}>
+                            <span className="font-semibold">{selectedGender === 'L' ? 'Pria' : 'Wanita'}</span>
+                            <button
+                                onClick={() => setSelectedGender(null)}
+                                className={selectedGender === 'L' ? 'text-blue-600 hover:text-blue-800' : 'text-red-600 hover:text-red-800'}
+                                aria-label="Hapus filter gender"
+                                title="Hapus filter gender"
                             >
                                 <XMarkIcon className="h-4 w-4" />
                             </button>
@@ -270,17 +310,20 @@ const HomePage: React.FC<HomePageProps> = ({ referees, logoUrl }) => {
                     ) : (
                         <div className="text-center py-12">
                             <p className="text-slate-500">
-                                {selectedLicense
-                                    ? `Tidak ada data wasit yang ditemukan dengan lisensi "${selectedLicense}".`
+                                {selectedLicense || selectedGender
+                                    ? `Tidak ada data wasit yang ditemukan dengan filter yang dipilih.`
                                     : "Belum ada data wasit yang tersedia."
                                 }
                             </p>
-                            {selectedLicense && (
+                            {(selectedLicense || selectedGender) && (
                                 <button
-                                    onClick={() => setSelectedLicense(null)}
+                                    onClick={() => {
+                                        setSelectedLicense(null);
+                                        setSelectedGender(null);
+                                    }}
                                     className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                                 >
-                                    Tampilkan Semua Wasit
+                                    Hapus Semua Filter
                                 </button>
                             )}
                         </div>

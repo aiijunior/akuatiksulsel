@@ -1,15 +1,14 @@
-// FIX: The original file had a reference to `vite/client` which was not being found.
-// This is typically due to a missing `vite-env.d.ts` or a misconfiguration in `tsconfig.json`.
-// To fix this without adding new files or changing configuration, we manually
-// define the types for `import.meta.env` in this file. This resolves all three
-// TypeScript errors related to environment variables.
-interface ImportMetaEnv {
-  readonly VITE_SUPABASE_URL: string;
-  readonly VITE_SUPABASE_ANON_KEY: string;
-}
-
-interface ImportMeta {
-  readonly env: ImportMetaEnv;
+// FIX: Resolved TypeScript errors for `import.meta.env` by correctly augmenting the global
+// `ImportMeta` type. The previous attempt used local interfaces which are not effective
+// for modifying global types within a module. Using `declare global` ensures the
+// type definitions for Vite's environment variables are recognized.
+declare global {
+  interface ImportMeta {
+    readonly env: {
+      readonly VITE_SUPABASE_URL: string;
+      readonly VITE_SUPABASE_ANON_KEY: string;
+    }
+  }
 }
 
 import { createClient } from '@supabase/supabase-js';
