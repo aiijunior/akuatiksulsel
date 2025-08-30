@@ -17,11 +17,12 @@ Ikuti langkah-langkah ini untuk menjalankan aplikasi secara lokal dengan databas
 - Buka Dasbor Proyek Anda, lalu navigasi ke **Settings** > **API**.
 - Salin **Project URL** dan **anon public key**. Anda akan membutuhkannya di langkah berikutnya.
 
-### 2. Konfigurasi Aplikasi
+### 2. Konfigurasi Environment Variables Lokal
 - Clone repositori ini ke mesin lokal Anda.
-- Di dalam folder proyek, ubah nama file `config.ts.txt` menjadi `config.ts`.
-- Buka `src/config.ts` dan isi nilai untuk `SUPABASE_URL` dan `SUPABASE_ANON_KEY` dengan informasi dari langkah 1.
-- (Opsional) Sesuaikan `ORGANIZATION_NAME` dan kredensial login admin sesuai kebutuhan Anda.
+- Di dalam folder proyek, ubah nama file `.env.example` menjadi `.env`.
+- Buka file `.env` yang baru Anda buat.
+- Isi nilai untuk `VITE_SUPABASE_URL` dan `VITE_SUPABASE_ANON_KEY` dengan informasi dari langkah 1.
+- (Opsional) Sesuaikan `ORGANIZATION_NAME` dan kredensial login admin di `src/config.ts` sesuai kebutuhan Anda.
 
 ### 3. Siapkan Database
 - Di Dasbor Supabase Anda, buka **SQL Editor**.
@@ -164,13 +165,11 @@ Aplikasi ini siap untuk di-deploy ke Netlify.
 3.  **Konfigurasi Build**: Netlify akan otomatis mendeteksi file `netlify.toml` dan mengisi pengaturan build dengan benar:
     - **Build command**: `npm run build`
     - **Publish directory**: `dist`
-4.  **Tambahkan Environment Variables (Sangat Direkomendasikan)**:
-    - Untuk keamanan, pindahkan kredensial Supabase Anda dari `src/config.ts` ke environment variables di Netlify.
-    - Di Netlify, navigasi ke **Site settings > Build & deploy > Environment**.
-    - Tambahkan variabel berikut:
-        - `VITE_SUPABASE_URL`: Isi dengan **Project URL** Anda.
-        - `VITE_SUPABASE_ANON_KEY`: Isi dengan **anon public key** Anda.
-    - Anda kemudian perlu memodifikasi `src/lib/supabaseClient.ts` untuk membaca variabel ini (`import.meta.env.VITE_SUPABASE_URL`).
+4.  **Tambahkan Environment Variables (WAJIB)**:
+    - Di dasbor Netlify, navigasi ke **Site settings > Build & deploy > Environment**.
+    - Klik **Edit variables** dan tambahkan variabel berikut:
+        - `VITE_SUPABASE_URL`: Isi dengan **Project URL** Anda dari Supabase.
+        - `VITE_SUPABASE_ANON_KEY`: Isi dengan **anon public key** Anda dari Supabase.
 5.  Klik **Deploy site**.
 
 ---
@@ -197,6 +196,11 @@ Aplikasi ini siap untuk di-deploy ke Netlify.
 ---
 
 ## Catatan Pembaharuan (Changelog)
+
+### v2.1.0
+- **Keamanan**: Kredensial Supabase dipindahkan dari kode sumber ke *environment variables* untuk meningkatkan keamanan.
+- **Konfigurasi Lokal**: Menambahkan dukungan untuk file `.env` untuk pengembangan lokal.
+- **Dokumentasi**: Memperbarui panduan setup dan deployment untuk mencerminkan penggunaan environment variables.
 
 ### v2.0.0
 - **Refactor ke Vite**: Migrasi proyek dari setup CDN ke build system Vite modern.

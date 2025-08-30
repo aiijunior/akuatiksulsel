@@ -5,13 +5,10 @@
  * File ini berisi semua pengaturan dan variabel yang dapat disesuaikan
  * untuk aplikasi. Ubah nilai di sini untuk menyesuaikan aplikasi
  * dengan kebutuhan organisasi Anda.
+ *
+ * CATATAN PENTING: Kredensial Supabase (URL dan Kunci) telah dipindahkan
+ * ke environment variables (.env file) untuk keamanan.
  */
-
-// --- KONFIGURASI SUPABASE (WAJIB DIISI JIKA DIGUNAKAN) ---
-// Masukkan URL dan Kunci Publik (anon key) dari proyek Supabase Anda.
-// Anda bisa mendapatkan informasi ini dari Dasbor Proyek > Settings > API.
-export const SUPABASE_URL = 'https://cbxhqualbvmgiwvocdru.supabase.co';
-export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNieGhxdWFsYnZtZ2l3dm9jZHJ1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTUwMDUzNTksImV4cCI6MjA3MDU4MTM1OX0.dbNB9JTddo0yZkg9buApiBr-SjuKey12c2pu0v0Ac04';
 
 // --- INFORMASI ORGANISASI & BRANDING ---
 // Nama organisasi yang akan muncul di seluruh aplikasi.
